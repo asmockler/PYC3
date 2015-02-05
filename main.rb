@@ -3,6 +3,10 @@ require 'active_support/core_ext'
 
 Bundler.require
 
+require_relative 'app/helpers'
+require_relative 'app/routes'
+require_relative 'app/models'
+
 include Mongo
 
 enable :sessions
@@ -15,8 +19,4 @@ configure do
  conn.authenticate(db.user, db.password) unless (db.user.nil? || db.password.nil?)
  set :mongo_db, conn
  MongoMapper.setup({'production' => {'uri' => ENV['MONGOHQ_URL']}}, 'production')
-end
-
-get '/' do
-	erb :index
 end
