@@ -1,0 +1,15 @@
+<section id="sidebar">
+	<% @songs.each do |song| %>
+	<div class="song row">
+		<div class="col-md-4">
+			<img src="<%= song.album_art %>" class="img-responsive">
+		</div>
+		<div class="col-md-8">
+			<div class="song-info">
+				<p><%= song.title %></p>
+				<p><%= song.artist %></p>
+			</div>
+		</div>
+	</div>
+	<% end %>
+</section>
