@@ -20,11 +20,22 @@ body {
 	overflow-x: hidden;
 }
 
-#sidebar .song {
+#sidebar .song > div.row {
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #000;
+	color: #eee;
+	transition: background .25s;
+	-webkit-transition: background .25s;
+	-moz-transition: background .25s;
+}
+
+#sidebar .song:hover > div.row {
+	background: #111;
 	border-top: 1px solid #333;
 	border-bottom: 1px solid #000;
 	color: #eee;
 }
+
 #sidebar .song .song-info {
 	padding: 10px 0;
 }
@@ -36,14 +47,28 @@ body {
 	top: 0;
 	bottom: 0;
 	right: 0;
-	background: tomato;
-	background-image: -o-linear-gradient(left top, #1DC2A1 0%, #ED499B 100%);
-	background-image: -moz-linear-gradient(left top, #1DC2A1 0%, #ED499B 100%);
-	background-image: -webkit-linear-gradient(left top, #1DC2A1 0%, #ED499B 100%);
-	background-image: -ms-linear-gradient(left top, #1DC2A1 0%, #ED499B 100%);
-	background-image: linear-gradient(to left top, #1DC2A1 0%, #ED499B 100%);
-	background-repeat: no-repeat;
-	background-attachment: fixed;
+	background: linear-gradient(300deg, #2fb094, #1f7cb0, #4bb6a9, #228bbb, #319ba7, #4391bd);
+	background-size: 1200% 1200%;
+
+	-webkit-animation: AnimationName 45s ease infinite;
+	-moz-animation: AnimationName 45s ease infinite;
+	animation: AnimationName 45s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 32%}
+    50%{background-position:100% 69%}
+    100%{background-position:0% 32%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 32%}
+    50%{background-position:100% 69%}
+    100%{background-position:0% 32%}
+}
+@keyframes AnimationName { 
+    0%{background-position:0% 32%}
+    50%{background-position:100% 69%}
+    100%{background-position:0% 32%}
 }
 
 #body nav {
@@ -69,9 +94,61 @@ body {
 }
 
 #body #album {
-	width:40%;
+	width:30%;
 	margin:auto;
 	display:block;
-	margin-top:100px;
+	margin-top:30px;
 	border-radius: 100%;
 }
+
+#body #controls {
+	text-align: center;
+	color:white;
+	margin-top:10px;
+}
+
+#body #controls .fa {
+	font-size: 30px;
+	vertical-align: super;
+}
+
+#body #controls .fay-play-default {
+	padding: 0 20px;
+}
+
+#body #controls .fay-play-default > svg {
+	padding-top: 7px;
+}
+
+#body #logo {
+	position:absolute;
+	bottom: 0;
+	right: 0;
+	left: 0;
+}
+
+#body #logo img {
+	margin: 0 auto 10px;
+	width:30%;
+}
+
+#body #song-info {
+	color: white;
+	font-size:35px;
+	text-align: center;
+	font-weight: 100;
+	letter-spacing: 1px;
+	margin-bottom: -20px;
+}
+
+#body #song-info .fa {
+	font-size:15px;
+	vertical-align: middle;
+	padding-bottom: 7px;
+}
+
+
+
+
+
+
