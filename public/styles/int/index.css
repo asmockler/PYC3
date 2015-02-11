@@ -101,13 +101,13 @@ body {
 	border-radius: 100%;
 }
 
-#body #controls {
+#body #controls, #body #toolbar {
 	text-align: center;
 	color:white;
 	margin-top:10px;
 }
 
-#body #controls .fa {
+#body #controls .fa, #body #toolbar .fa {
 	font-size: 30px;
 	vertical-align: super;
 }
@@ -147,8 +147,20 @@ body {
 	padding-bottom: 7px;
 }
 
+#body #volume-control {
+	margin:auto;
+	width: 200px;
+	height: 10px;
+	background: rgba(255,255,255,.5);
+	border-radius: 10px;
+	display:none;
+}
 
-
+#body #volume-bar {
+	height: 100%;
+	background:white;
+	border-radius: 10px;
+}
 
 
 

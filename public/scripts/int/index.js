@@ -35,6 +35,26 @@ var Index = {
 		$(Circle.path).on('click', function (e) {
 			Index.scrub(e);
 		});
+
+		// Volume controls
+		$('.fa-volume-up').on('mouseenter', function () {
+			$('#volume-control').fadeIn();
+		});
+
+		$('#volume-control').on('mouseleave', function () {
+			$(this).fadeOut();
+		});
+
+		$('#volume-control').on('click', function (e) {
+			var parentOffset = $(this).offset(); 
+			var relX = e.pageX - parentOffset.left;
+
+			$('#volume-bar').css({
+				'width' : (relX / 2) + "%"
+			});
+
+			Song.setVolume(relX/200);
+		});
 	},
 	setupScrubbing : function () {
 		// Get values for player circle to do scrubbing calculations
