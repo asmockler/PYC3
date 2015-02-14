@@ -3,25 +3,14 @@ var Track;
 var Circle;
 var circleOffset, circleWidth, circleHeight, circleCenterX, circleCenterY;
 var currentUrl;
+var sidebarLoading = false;
 
 // Make it not go to sleep
 // Search songs
 // Favorites
 
 var Index = {
-	events : function () {
-		// Load and play songs from sidebar
-		$('.song').on('click', function (e){
-			e.preventDefault();
-
-			var albumArt = $(this).find('img').attr('src');
-			var song = $(this).data('title');
-			var artist = $(this).data('artist');
-			currentUrl = $(this).data('sc-url');
-			Index.updatePlayer(albumArt, song, artist);
-			Index.streamTrack(currentUrl, "play");
-		});
-
+	pageEvents : function () {
 		// Play and Pause
 		$('.fay-play-default').on('click', function (e){
 			Index.playAndPause();
@@ -81,6 +70,48 @@ var Index = {
 				$('#volume-bar').css('width', '0%');
 			}
 		});
+
+		// Load more songs
+		$('#load-more-songs').off('click');
+		$('#load-more-songs').click(function(){
+			var num_songs = $('.song').length - 1; // Get songs minus the load more button
+			var data = $.ajax({
+				type: 'GET',
+				url: '/more/' + num_songs,
+				complete: function (data) {
+					var html = data.responseText
+					$('.song').eq(num_songs - 1).after(html); // -1 because arrays
+					Index.songEvents();
+				},
+				error: function (error) {
+					console.log(error)
+				}
+			})
+				// .done(function (data){
+				// 	console.log(data)
+				// })
+		});
+	},
+	songEvents : function () {
+		// Load and play songs from sidebar
+		$('.just-loaded .song-info, .just-loaded img').on('click', function (e){
+			e.preventDefault();
+			$this = $(this).parent('.song');
+			var albumArt = $this.find('img').attr('src');
+			var song = $this.data('title');
+			var artist = $this.data('artist');
+			currentUrl = $this.data('sc-url');
+			Index.updatePlayer(albumArt, song, artist);
+			Index.streamTrack(currentUrl, "play");
+		});
+
+		$('.just-loaded .fa-heart').on('click', function (e) {
+			e.preventDefault();
+			$(this).css('color', '#e74c3c');
+			console.log('oh em heart')
+		});
+
+		$('.just-loaded').removeClass('just-loaded');
 	},
 	setupScrubbing : function () {
 		// Get values for player circle to do scrubbing calculations
@@ -229,7 +260,8 @@ var Index = {
 		window.setInterval(Index.autoAdvance, 1000);
 
 		// Set up events
-		Index.events();
+		Index.pageEvents();
+		Index.songEvents();
 	}
 }
 

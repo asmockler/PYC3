@@ -12,9 +12,13 @@ body {
 	cursor:pointer;
 }
 
+a:hover {
+	text-decoration: none;
+}
+
 #sidebar{
 	height: 100%;
-	width: 25%;
+	width: 400px;
 	position:absolute;
 	top:0;
 	bottom: 0;
@@ -24,7 +28,10 @@ body {
 	overflow-x: hidden;
 }
 
-#sidebar .song > div.row {
+#sidebar .song {
+	position:relative;
+	display:block;
+	height: 120px;
 	border-top: 1px solid #333;
 	border-bottom: 1px solid #000;
 	color: #eee;
@@ -33,24 +40,60 @@ body {
 	-moz-transition: background .25s;
 }
 
-#sidebar .song:hover > div.row {
+#sidebar .song:hover {
 	background: #111;
-	border-top: 1px solid #333;
-	border-bottom: 1px solid #000;
-	color: #eee;
+	text-decoration: none;
+}
+
+#sidebar .song img {
+	width: 120px;
+	position:absolute;
+	left:0;
 }
 
 #sidebar .song .song-info {
-	padding: 10px 0;
+	display:inline-block;
+	margin: 0 0 0 10px;
+	position:absolute;
+	left: 120px;
+	right: 50px;
+	top: 25px;
+	bottom: 0;
+}
+
+#sidebar .song .song-tools {
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 15px;
+	font-size: 20px;
+}
+
+#sidebar .song .song-tools .fa-heart {
+	transition: color .25s;
+	-webkit-transition: color .25s;
+}
+
+#sidebar .song .song-tools .fa-heart:hover {
+	color: #e74c3c;
+}
+
+#sidebar #load-more-songs {
+	text-align: center;
+	padding-top: 45px;
+	letter-spacing: 2px;
+	font-size: 25px;
+	color: #1DC2A1;
+	text-decoration: none;
 }
 
 #body {
 	height: 100%;
-	width: 75%;
 	position:absolute;
 	top: 0;
 	bottom: 0;
 	right: 0;
+	left: 400px;
 	background: linear-gradient(300deg, #2fb094, #1f7cb0, #4bb6a9, #228bbb, #319ba7, #4391bd);
 	background-size: 1200% 1200%;
 
@@ -130,6 +173,7 @@ body {
 	bottom: 0;
 	right: 0;
 	left: 0;
+	z-index: 300;
 }
 
 #body #logo img {

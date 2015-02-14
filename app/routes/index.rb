@@ -5,3 +5,10 @@ get '/' do
 
   erb :'index/index'
 end
+
+get '/more/:number_to_skip' do
+	number_to_skip = params[:number_to_skip]
+	@songs = Song.limit(10).skip(number_to_skip).find_each(:published => true, :order => :created_at.desc)
+
+	erb :'index/partials/songs'
+end
