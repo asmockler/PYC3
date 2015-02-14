@@ -649,8 +649,8 @@
 				//////////////////
 				// BASIC SHAPES //
 				//////////////////
-				var play = 'M ' + 10*size + ' ' + 8*size + ' l ' + 28*size + ' ' + 17*size + ' l ' + -28*size + ' ' + 17*size + ' z';
-				var pause = 'M ' + 10*size + ' ' + 10*size + ' l ' + 10*size + ' ' + 0 + ' l ' + 0 + ' ' + 30*size + ' l ' + -10*size + ' ' + 0 + ' l ' + 0 + ' ' + -30*size + ' M ' + 30*size + ' ' + 10*size + ' l ' + 10*size + ' ' + 0 + ' l ' + 0 + ' ' + 30*size + ' l ' + -10*size + ' ' + 0 + ' l ' + 0 + ' ' + -30*size;
+				var play = 'M ' + 15*size + ' ' + 0*size + ' l ' + 25*size + ' ' + 15*size + ' l ' + -25*size + ' ' + 15*size + ' z';
+				var pause = 'M ' + 12*size + ' ' + 0*size + ' l ' + 10*size + ' ' + 0 + ' l ' + 0 + ' ' + 30*size + ' l ' + -10*size + ' ' + 0 + ' l ' + 0 + ' ' + -30*size + ' M ' + 30*size + ' ' + 0*size + ' l ' + 10*size + ' ' + 0 + ' l ' + 0 + ' ' + 30*size + ' l ' + -10*size + ' ' + 0 + ' l ' + 0 + ' ' + -30*size;
 				var pauseOffCanvas = 'M ' + -20*size + ' ' + 5*size + ' l ' + 15*size + ' ' + 0 + ' l ' + 0 + ' ' + 40*size + ' l ' + -15*size + ' ' + 0 + ' l ' + 0 + ' ' + -40*size + ' M ' + 55*size + ' ' + 5*size + ' l ' + 15*size + ' ' + 0 + ' l ' + 0 + ' ' + 40*size + ' l ' + -15*size + ' ' + 0 + ' l ' + 0 + ' ' + -40*size;
 				var nothing = 'M ' + 25*size + ' ' + 25*size + ' l ' + 1 + ' ' + 1;
 				var stop = 'M ' + 11*size + ' ' + 11*size + ' l ' + 28*size + ' ' + 0 + ' l ' + 0 + ' ' + 28*size + ' l ' + -28*size + ' ' + 0 + ' z';
