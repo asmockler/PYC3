@@ -8,6 +8,10 @@ body {
 	width: 100%;
 }
 
+.fa {
+	cursor:pointer;
+}
+
 #sidebar{
 	height: 100%;
 	width: 25%;
@@ -101,23 +105,24 @@ body {
 	border-radius: 100%;
 }
 
-#body #controls, #body #toolbar {
+#body #controls{
 	text-align: center;
 	color:white;
 	margin-top:10px;
 }
 
-#body #controls .fa, #body #toolbar .fa {
+#body #controls .fa {
 	font-size: 30px;
+}
+
+#body #controls .fa-backward, #body #controls .fa-forward {
+	padding: 0 20px;
 	vertical-align: super;
 }
 
-#body #controls .fay-play-default {
-	padding: 0 20px;
-}
-
 #body #controls .fay-play-default > svg {
-	padding-top: 7px;
+	vertical-align: middle;
+	margin-top:-5px;
 }
 
 #body #logo {
@@ -128,8 +133,8 @@ body {
 }
 
 #body #logo img {
-	margin: 0 auto 10px;
-	width:30%;
+	margin: 0 10px 10px auto;
+	width:20%;
 }
 
 #body #song-info {
@@ -138,29 +143,104 @@ body {
 	text-align: center;
 	font-weight: 100;
 	letter-spacing: 1px;
-	margin-bottom: -20px;
 }
 
 #body #song-info .fa {
 	font-size:15px;
-	vertical-align: middle;
 	padding-bottom: 7px;
 }
 
-#body #volume-control {
-	margin:auto;
-	width: 200px;
-	height: 10px;
-	background: rgba(255,255,255,.5);
-	border-radius: 10px;
-	display:none;
+#body #toolbar {
+	color: white;
+	font-size: 20px;
+	text-align: center;
 }
 
-#body #volume-bar {
+#body #toolbar #volume-control {
+	margin:auto;
+	width: 150px;
+	height: 8px;
+	background: rgba(255,255,255,.5);
+	border-radius: 10px;
+	display:inline-block;
+	cursor: pointer;
+	margin-bottom: 3px;
+}
+
+#body #toolbar #volume-bar {
 	height: 100%;
 	background:white;
 	border-radius: 10px;
+	cursor: pointer;
 }
+
+#loading {
+	position: absolute;
+	width:100%;
+	height:100%;
+	background: rgba(0,0,0,.95);
+	z-index: 200;
+}
+
+#loading p {
+	color: white;
+	font-weight: 300;
+	text-transform: uppercase;
+	letter-spacing: 10px;
+	text-align: center;
+	width: 100%;
+}
+
+p#load-status {
+	letter-spacing: 1px;
+}
+
+.spinner {
+  margin: 230px auto 0;
+  width: 70px;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 18px;
+  height: 18px;
+  background-color: #fff;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+  animation: bouncedelay 1.4s infinite ease-in-out;
+  /* Prevent first frame from flickering when animation starts */
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0.0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes bouncedelay {
+  0%, 80%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 40% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+
+
 
 
 

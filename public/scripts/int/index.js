@@ -29,31 +29,57 @@ var Index = {
 
 		// Setup variables for scrubbing
 		Index.setupScrubbing();
-		$(window).on('resize', function(){ Index.setupScrubbing() });
+		$(window).on('resize', function(){ Index.setupScrubbing(); Index.setupLoadingDiv(); });
 
 		// Scrubbing
-		$(Circle.path).on('click', function (e) {
-			Index.scrub(e);
+		$(Circle.path).on('mousedown', function (e) {
+			Index.scrub(e, 100);
+			$(document).on('mousemove', function (e) {
+				Index.scrub(e, 1);
+			});
+			$(document).on('mouseup', function(){
+				$(document).off('mousemove').off('mouseup');
+			});
 		});
 
 		// Volume controls
-		$('.fa-volume-up').on('mouseenter', function () {
-			$('#volume-control').fadeIn();
-		});
-
-		$('#volume-control').on('mouseleave', function () {
-			$(this).fadeOut();
-		});
-
-		$('#volume-control').on('click', function (e) {
-			var parentOffset = $(this).offset(); 
-			var relX = e.pageX - parentOffset.left;
-
-			$('#volume-bar').css({
-				'width' : (relX / 2) + "%"
+		$('#volume-control').on('mousedown', function (e) {
+			var volume = function (e) {
+				var parentOffset = $('#volume-control').offset(); 
+				var relX = e.pageX - parentOffset.left;
+				var vol = relX / 1.5;
+				if (vol > 100) {
+					vol = 100;
+				} else if (vol <= 0) {
+					vol = 0;
+					$('.vol-icon').removeClass('fa-volume-up fa-volume-down').addClass('fa-volume-off');
+				} else if (vol > 0 && vol < 60) { 
+					$('.vol-icon').removeClass('fa-volume-up fa-volume-off').addClass('fa-volume-down');
+				} else if (vol >= 60 && vol <= 100) {
+					$('.vol-icon').removeClass('fa-volume-off fa-volume-down').addClass('fa-volume-up');
+				}
+				$('#volume-bar').css('width', (vol) + "%");
+				Song.setVolume(vol/100);
+			}
+			volume(e);
+			$(document).on('mousemove', function (e) {
+				volume(e);
 			});
-
-			Song.setVolume(relX/200);
+			$(document).on('mouseup', function(){
+				$(document).off('mousemove').off('mouseup');
+			});
+		});
+		$('.vol-icon').on('click', function (e) {
+			e.preventDefault();
+			if ( $(this).hasClass('fa-volume-off') ) {
+				$(this).removeClass('fa-volume-off').addClass('fa-volume-up');
+				Song.setVolume(0.6);
+				$('#volume-bar').css('width', '60%');
+			} else {
+				$(this).removeClass('fa-volume-up fa-volume-down').addClass('fa-volume-off');
+				Song.setVolume(0);
+				$('#volume-bar').css('width', '0%');
+			}
 		});
 	},
 	setupScrubbing : function () {
@@ -64,7 +90,7 @@ var Index = {
 		circleCenterX = circleOffset.left + circleWidth / 2;	
 		circleCenterY = circleOffset.top + circleHeight / 2;
 	},
-	scrub : function (e) {
+	scrub : function (e, speed) {
 		// Get absolute click coordinates
 		var x = e.clientX;
 		var y = e.clientY;
@@ -92,7 +118,7 @@ var Index = {
 		var seekPercent = actualAngle / 360;
 		Song.seek(seekPercent * Song.getDuration());
 		Circle.animate(seekPercent, {
-			duration: 300,
+			duration: speed,
 		});
 	},
 	updatePlayer : function (albumArt, song, artist) {
@@ -100,13 +126,34 @@ var Index = {
 		$('#title').html(song);
 		$('#artist').html(artist)
 	},
+	setupLoadingDiv: function () {						
+		$('#loading').css({
+			'width': circleWidth,
+			'height': circleHeight - 4,
+			'left': circleOffset.left - 7,
+			'top': circleOffset.top - 7,
+			'border-radius': '100%'
+		});
+		$('.spinner').css('margin', (circleHeight / 2) - 10 + 'px auto 0');
+	},
 	streamTrack : function (url, action) {
 		var action = action || 'load';
+		$('#loading').fadeIn();
 		SC.get('/resolve', { url: url }, function (track) {
 			Track = track;
 			SC.stream('/tracks/' + Track.id, function (song) {
+				// Fade out loading status
+				$('#loading').fadeOut(function(){
+					// Sets up the loading div on first load
+					if(action === 'load') {
+						Index.setupLoadingDiv();
+					}
+				});
 				if (Song != undefined) Song.stop();
 				Song = song;
+				Circle.animate(0, {
+					duration: 1,
+				});
 				if (action === 'play') {
 					if ( $('.fay-play-default').attr('data-fay-play') === "true" ) { $('.fay-play-default').triggerHandler('click') }
 					Song.play();
@@ -176,7 +223,7 @@ var Index = {
 		var artist = $('.song').eq(0).data('artist');
 		currentUrl = $('.song').eq(0).data('sc-url');
 		Index.updatePlayer(albumArt, song, artist);
-		Index.streamTrack(currentUrl, "load")
+		Index.streamTrack(currentUrl, "load");
 
 		window.setInterval(Index.setupProgressBar, 1000);
 		window.setInterval(Index.autoAdvance, 1000);
