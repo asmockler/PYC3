@@ -844,7 +844,7 @@
 					'cursor' : 'pointer',
 				});
 				// Ensure items without fills don't get filled in
-				if ( path.css('fill') == "rgb(0, 0, 0)" ){
+				if ( path.css('fill') == "rgb(0, 0, 0)" || path.css('fill') == "#000000" ){
 					path.css({
 						'fill' : defaultColor,
 					});
@@ -853,6 +853,7 @@
 					'stroke' : defaultColor,
 					'opacity' : opacity
 				});	
+                           path.attr("fill", defaultColor);
 			});
 		},
 		init : function ( selector ){
