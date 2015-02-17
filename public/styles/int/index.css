@@ -12,13 +12,14 @@ body {
 	cursor:pointer;
 }
 
-a:hover {
+a:hover, a:focus {
 	text-decoration: none;
 }
 
 #sidebar{
 	height: 100%;
 	width: 400px;
+	padding-top: 35px;
 	position:absolute;
 	top:0;
 	bottom: 0;
@@ -93,6 +94,42 @@ a:hover {
 	font-size: 25px;
 	color: #1DC2A1;
 	text-decoration: none;
+}
+
+#sidebar #sidebar-toolbar {
+	position:fixed;
+	top: 0;
+	width:400px;
+	background: #222;
+	height:35px;
+	border-bottom: 1px solid #000;
+	color: #eee;
+	padding:10px;
+	z-index:150;
+}
+
+#sidebar #sidebar-toolbar .user-info {
+	text-transform: uppercase;
+	font-size: 10px;
+}
+
+#sidebar #sidebar-toolbar .user-info a {
+	color: #eee;
+}
+
+#sidebar #sidebar-toolbar .user-info .pull-right {
+	letter-spacing: 2px;
+	font-weight: 500;
+}
+
+#sidebar #sidebar-toolbar .dropdown-menu {
+	border-radius: 0;
+	font-size:10px;
+	min-width:100px;
+}
+
+#sidebar #sidebar-toolbar .dropdown-menu a {
+	color: #222;
 }
 
 #body {
