@@ -18,12 +18,14 @@
 	</head>
 	<body>
 		<main>
-			<section id="sidebar">
-				<%= erb :'index/partials/songs' %>
-				<a href="#" class="song" id="load-more-songs">
-					<p>LOAD MORE SONGS</p>
-				</a>
-			</section>
+			<div id="scroll-hack">
+				<section id="sidebar">
+					<%= erb :'index/partials/songs' %>
+					<a href="#" class="song" id="load-more-songs">
+						<p>LOAD MORE SONGS</p>
+					</a>
+				</section>
+			</div>
 			<%= erb :'index/partials/body' %>
 		</main>
 
