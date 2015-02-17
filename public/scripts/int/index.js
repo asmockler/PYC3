@@ -7,7 +7,7 @@ var sidebarLoading = false;
 
 // Make it not go to sleep
 // Search songs
-// Favorites
+// Favorites (cumulative favorites for songs - use this as upvotes	)
 
 var Index = {
 	pageEvents : function () {
@@ -18,7 +18,13 @@ var Index = {
 
 		// Setup variables for scrubbing
 		Index.setupScrubbing();
-		$(window).on('resize', function(){ Index.setupScrubbing(); Index.setupLoadingDiv(); });
+		$(window).on('resize', function(){ 
+			Index.setupScrubbing(); 
+			Index.setupLoadingDiv();
+
+			var textareaWidth = document.getElementById("textarea").scrollWidth;
+			document.getElementById("wrapper").style.width = textareaWidth + "px"; 
+		});
 
 		// Scrubbing
 		$(Circle.path).on('mousedown', function (e) {
@@ -107,8 +113,7 @@ var Index = {
 
 		$('.just-loaded .fa-heart').on('click', function (e) {
 			e.preventDefault();
-			$(this).css('color', '#e74c3c');
-			console.log('oh em heart')
+			$(this).parents('.song').toggleClass('fav');
 		});
 
 		$('.just-loaded').removeClass('just-loaded');

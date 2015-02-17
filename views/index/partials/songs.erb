@@ -1,5 +1,5 @@
 <% @songs.each do |song| %>
-<a href="#" class="song just-loaded" data-sc-url="<%= song.soundcloud_url %>" data-artist="<%= song.artist %>" data-title="<%= song.title %>">
+<a href="#" class="song just-loaded <% if 0 == 1 %>fav<% end %>" data-sc-url="<%= song.soundcloud_url %>" data-artist="<%= song.artist %>" data-title="<%= song.title %>">
 	<img src="<%= song.album_art %>" class="img-responsive">
 	<div class="song-info">
 		<p><%= song.title %></p>

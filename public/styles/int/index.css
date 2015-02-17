@@ -16,6 +16,10 @@ a:hover {
 	text-decoration: none;
 }
 
+#scroll-hack {
+	overflow:hidden;
+}
+
 #sidebar{
 	height: 100%;
 	width: 400px;
@@ -24,8 +28,8 @@ a:hover {
 	bottom: 0;
 	left: 0;
 	background: #222;
-	overflow-y: auto;
-	overflow-x: hidden;
+	overflow-x:none;
+	overflow-y:auto;
 }
 
 #sidebar .song {
@@ -74,8 +78,16 @@ a:hover {
 	-webkit-transition: color .25s;
 }
 
-#sidebar .song .song-tools .fa-heart:hover {
+#sidebar .song .fa-heart:hover {
+	color: #bbb;
+}
+
+#sidebar a.fav .fa-heart {
 	color: #e74c3c;
+}
+
+#sidebar a.fav .fa-heart:hover {
+	color: #c0392b;
 }
 
 #sidebar #load-more-songs {
