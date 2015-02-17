@@ -21,9 +21,6 @@ var Index = {
 		$(window).on('resize', function(){ 
 			Index.setupScrubbing(); 
 			Index.setupLoadingDiv();
-
-			var textareaWidth = document.getElementById("sidebar").scrollWidth;
-			document.getElementById("scroll-hack").style.width = textareaWidth + "px"; 
 		});
 
 		// Scrubbing
@@ -267,6 +264,8 @@ var Index = {
 		// Set up events
 		Index.pageEvents();
 		Index.songEvents();
+
+		document.getElementById("scroll-hack").style.width = "400px"; 
 	}
 }
 
