@@ -22,8 +22,8 @@ var Index = {
 			Index.setupScrubbing(); 
 			Index.setupLoadingDiv();
 
-			var textareaWidth = document.getElementById("textarea").scrollWidth;
-			document.getElementById("wrapper").style.width = textareaWidth + "px"; 
+			var textareaWidth = document.getElementById("sidebar").scrollWidth;
+			document.getElementById("scroll-hack").style.width = textareaWidth + "px"; 
 		});
 
 		// Scrubbing
