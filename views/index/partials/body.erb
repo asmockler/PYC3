@@ -2,7 +2,7 @@
 	<%= erb :'index/partials/navbar' %>
 	<section id="player">
 		<div id="album"></div>
-		<div id="song-info">
+		<div id="song-info" data-current-slug="">
 			<span id="artist"></span>
 			<i class="fa fa-life-ring fa-fw"></i> 
 			<span id="title"></span> 
@@ -17,7 +17,7 @@
 			<div id="volume-control">
 				<div id="volume-bar"></div>
 			</div>
-			<i class="fa fa-retweet fa-fw"></i>
+			<i class="fa fa-retweet fa-fw" data-toggle="modal" data-target="#share"></i>
 		</div>
 		<div id="logo">
 			<img src="assets/provo_yacht_club2.png" alt="" class="img-responsive">

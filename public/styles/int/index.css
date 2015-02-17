@@ -16,11 +16,6 @@ a:hover {
 	text-decoration: none;
 }
 
-#scroll-hack {
-	overflow:hidden;
-	height:100%;
-}
-
 #sidebar{
 	height: 100%;
 	width: 400px;
@@ -297,7 +292,13 @@ p#load-status {
   }
 }
 
+#share .modal-content, #share .form-control, #share .input-group-addon {
+	border-radius: 0;
+}
 
+#share .input-group {
+	margin: 15px 30px;
+}
 
 
 

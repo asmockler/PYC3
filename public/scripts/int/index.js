@@ -94,6 +94,12 @@ var Index = {
 				// 	console.log(data)
 				// })
 		});
+
+		$('#share').on('show.bs.modal', function() {
+			$('#share-label>span').html($('#title').html());
+			$('#soundcloud-share-text').val(currentUrl);
+			$('#pyc-share-text').val("http://www.provoyachtclub.com/track/" + $('#song-info').attr('data-current-slug'));
+		})
 	},
 	songEvents : function () {
 		// Load and play songs from sidebar
@@ -103,8 +109,9 @@ var Index = {
 			var albumArt = $this.find('img').attr('src');
 			var song = $this.data('title');
 			var artist = $this.data('artist');
+			var slug = $this.data('slug');
 			currentUrl = $this.data('sc-url');
-			Index.updatePlayer(albumArt, song, artist);
+			Index.updatePlayer(albumArt, song, artist, slug);
 			Index.streamTrack(currentUrl, "play");
 		});
 
@@ -154,10 +161,11 @@ var Index = {
 			duration: speed,
 		});
 	},
-	updatePlayer : function (albumArt, song, artist) {
+	updatePlayer : function (albumArt, song, artist, slug) {
 		$('image').attr('xlink:href', albumArt);
 		$('#title').html(song);
-		$('#artist').html(artist)
+		$('#artist').html(artist);
+		$('#song-info').attr('data-current-slug', slug)
 	},
 	setupLoadingDiv: function () {						
 		$('#loading').css({
@@ -221,11 +229,10 @@ var Index = {
 				var albumArt = nextSong.find('img').attr('src');
 				var song = nextSong.data('title');
 				var artist = nextSong.data('artist');
+				var slug = nextSong.data('slug');
 				currentUrl = nextSong.data('sc-url');
-				Index.updatePlayer(albumArt, song, artist);
+				Index.updatePlayer(albumArt, song, artist, slug);
 				Index.streamTrack(currentUrl, "play");
-
-				
 			}
 		}
 	},
@@ -254,8 +261,9 @@ var Index = {
 		var albumArt = $('.song').eq(0).find('img').attr('src');
 		var song = $('.song').eq(0).data('title');
 		var artist = $('.song').eq(0).data('artist');
+		var slug = $('.song').eq(0).data('slug');
 		currentUrl = $('.song').eq(0).data('sc-url');
-		Index.updatePlayer(albumArt, song, artist);
+		Index.updatePlayer(albumArt, song, artist, slug);
 		Index.streamTrack(currentUrl, "load");
 
 		window.setInterval(Index.setupProgressBar, 1000);
@@ -264,8 +272,6 @@ var Index = {
 		// Set up events
 		Index.pageEvents();
 		Index.songEvents();
-
-		document.getElementById("scroll-hack").style.width = "400px"; 
 	}
 }
 
