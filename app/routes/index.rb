@@ -12,3 +12,17 @@ get '/more/:number_to_skip' do
 
 	erb :'index/partials/songs'
 end
+
+post '/login' do
+	@user = User.first(:email => params[:email])
+
+	if @user
+		if @user.authenticate params[:password]
+			puts "Nailed it"
+		else
+			puts "Wrong password"
+		end
+	else
+		"no_user"
+	end
+end

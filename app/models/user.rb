@@ -8,4 +8,11 @@ class User
 	key :email,               String, :unique => true
 	key :admin,               Boolean
 	key :password_digest,     String
+	many :favorites          
+end
+
+# Favorites are set by setting Favorite._id to the BSON::ObjectId of the song favorited
+# Favorite.new(:_id => BSON::.....)
+class Favorite
+	include MongoMapper::EmbeddedDocument
 end

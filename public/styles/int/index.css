@@ -334,11 +334,11 @@ p#load-status {
   }
 }
 
-#share .modal-content, #share .form-control, #share .input-group-addon {
+.modal-content, .form-control, .input-group-addon {
 	border-radius: 0;
 }
 
-#share .input-group {
+.input-group {
 	margin: 15px 30px;
 }
 
