@@ -21,7 +21,11 @@
 			<section id="sidebar">
 				<div id="sidebar-toolbar">
 					<div class="user-info">
+						<% if @user %>
 						Logged in as <a href="#">Andy Mockler</a>
+						<% else %>
+						<a href="#" data-toggle="modal" data-target="#login">Log In</a>
+						<% end %>
 
 						<div class="dropdown pull-right">
 							<a href="#" class="dropdown-toggle" id="player-dropdown" data-toggle="dropdown"><span>Recent <span class="caret"></span></span></a>
@@ -42,6 +46,7 @@
 
 		<%= erb :'index/partials/album_art_pattern' %>
 		<%= erb :'index/partials/share_modal' %>
+		<%= erb :'index/partials/login_modal' %>
 
 		<!-- jQuery -->
 		<script src="//code.jquery.com/jquery.js"></script>
