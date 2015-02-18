@@ -18,11 +18,17 @@ post '/login' do
 
 	if @user
 		if @user.authenticate params[:password]
-			puts "Nailed it"
+			session["user"] = @user
+			response = {"name" => "#{@user['first_name']} #{@user['last_name']}", "favorites" => []}
+			@favorites = ["la-la-la-oliver-nelson-tobtok-remix"]
+			@songs = Song.limit(10).skip(0).find_each(:published => true, :order => :created_at.desc)
+			template = erb :'index/partials/songs'
+			name = "#{@user['first_name']} #{@user['last_name']}"
+			return [200, [{:template => template, :name => name}.to_json]]
 		else
-			puts "Wrong password"
+			return 401
 		end
 	else
-		"no_user"
+		return 404
 	end
 end

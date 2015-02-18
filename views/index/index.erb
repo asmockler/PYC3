@@ -21,11 +21,13 @@
 			<section id="sidebar">
 				<div id="sidebar-toolbar">
 					<div class="user-info">
-						<% if @user %>
-						Logged in as <a href="#">Andy Mockler</a>
+						<span class="user">
+						<% if session["user"] %>
+						Logged in as <a href="#"><%= "#{session['user']['first_name']} #{session['user']['last_name']}" %></a>
 						<% else %>
 						<a href="#" data-toggle="modal" data-target="#login">Log In</a>
 						<% end %>
+						</span>
 
 						<div class="dropdown pull-right">
 							<a href="#" class="dropdown-toggle" id="player-dropdown" data-toggle="dropdown"><span>Recent <span class="caret"></span></span></a>

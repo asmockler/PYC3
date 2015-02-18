@@ -9,8 +9,9 @@ require_relative 'app/models'
 
 include Mongo
 
-enable :sessions
-set :session_secret, 'sd98u43nf834fnwe0s8f'
+use Rack::Session::Cookie, :key => 'rack.session',
+                           :expire_after => 60, # In seconds
+                           :secret => 'sd98u43nf834fnwe0s8f'
 
 configure do
  db = URI.parse(ENV['MONGOHQ_URL'])

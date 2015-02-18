@@ -40,5 +40,14 @@ Sidebar.prototype = {
 		});
 
 		$('.just-loaded').removeClass('just-loaded');
+	},
+	/*
+	 *  Receives data from ajax call to update favorites
+	 */
+	reloadSidebar : function(data) {
+		$('.song').not( document.getElementById('load-more-songs') ).remove();
+		$('#load-more-songs').before(data.template);
+		$('.user').html('Logged in as ' + data.name);
+		this.events();
 	}
 }

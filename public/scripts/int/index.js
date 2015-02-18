@@ -21,10 +21,35 @@ Index.prototype = {
 
 		$('#login-submit').on('click', function(e){
 			e.preventDefault();
-			$.post('/login',
-				$('#login-form').serialize()
-			);
+			$.ajax({
+				type : 'POST',
+				url  : '/login',
+				data : $('#login-form').serialize(),
+				dataType : 'json',
+				success: function(data) {
+					sidebar.reloadSidebar(data)
+					$('#login').modal('hide');
+				},
+				error: function(error) {
+					this.loginError(error);
+				}
+			});
 		});
+	},
+	loginError : function (error) {
+		if ( error.status === 401 ) {
+			if ( $('#login .alert').length < 1 ) {
+				$('#login-form').before('<div class="alert alert-danger"><strong>Uh oh...</strong> Looks like you\'ve got the wrong password</div>')
+			} else {
+				$('.alert').html('<strong>Uh oh...</strong> Looks like you\'ve got the wrong password')
+			}
+		} else if ( error.status === 404 ) {
+			if ( $('#login .alert').length < 1 ) {
+				$('#login-form').before('<div class="alert alert-danger"><strong>Uh oh...</strong> We couldn\'t find that user. Are you sure you have an account?</div>')
+			} else {
+				$('.alert').html('<strong>Uh oh...</strong> We couldn\'t find that user. Are you sure you have an account?')
+			}
+		}
 	}
 }
 
