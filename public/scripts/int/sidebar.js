@@ -36,7 +36,11 @@ Sidebar.prototype = {
 
 		$('.just-loaded .fa-heart').on('click', function (e) {
 			e.preventDefault();
-			$(this).parents('.song').toggleClass('fav');
+			if ( $(this).parents('.song').hasClass('fav') ) {
+				$this.unfavoriteSong($(this));
+			} else {
+				$this.favoriteSong($(this));
+			}
 		});
 
 		$('.just-loaded').removeClass('just-loaded');
@@ -49,5 +53,39 @@ Sidebar.prototype = {
 		$('#load-more-songs').before(data.template);
 		$('.user').html('Logged in as ' + data.name);
 		this.events();
+	},
+	favoriteSong : function( element ) {
+		element.parents('.song').addClass('fav');
+		var slug = element.parents('.song').attr('data-slug');
+		$.ajax({
+			type: 'POST',
+			url: '/favorite/favorite/' + slug,
+			complete: function(data) {
+
+			},
+			error: function(error) {
+				element.parents('.song').removeClass('fav');
+				if (error.status === 401 || error.status === 404) {
+					$('#login').modal('show')
+				}
+			}
+		})
+	},
+	unfavoriteSong : function( element ) {
+		element.parents('.song').removeClass('fav');
+		var slug = element.parents('.song').attr('data-slug');
+		$.ajax({
+			type: 'POST',
+			url: '/favorite/unfavorite/' + slug,
+			complete: function(data) {
+
+			},
+			error: function(error) {
+				element.parents('.song').addClass('fav');
+				if (error.status === 401 || error.status === 404) {
+					$('#login').modal('show')
+				}
+			}
+		})
 	}
 }

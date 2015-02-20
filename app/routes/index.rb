@@ -19,8 +19,6 @@ post '/login' do
 	if @user
 		if @user.authenticate params[:password]
 			session["user"] = @user
-			response = {"name" => "#{@user['first_name']} #{@user['last_name']}", "favorites" => []}
-			@favorites = ["la-la-la-oliver-nelson-tobtok-remix"]
 			@songs = Song.limit(10).skip(0).find_each(:published => true, :order => :created_at.desc)
 			template = erb :'index/partials/songs'
 			name = "#{@user['first_name']} #{@user['last_name']}"
@@ -32,3 +30,23 @@ post '/login' do
 		return 404
 	end
 end
+
+post '/favorite/:action/:slug' do
+	return 401 unless session["user"]
+
+	@slug = params[:slug]
+	@user = User.find(session["user"]._id)
+
+	if params[:action] == "favorite"
+		@user.favorites << @slug
+	elsif params[:action] == "unfavorite"
+		@user.favorites.delete(@slug)
+	end
+	@user.save
+
+	@user.reload
+	session["user"] = @user
+
+	return 200
+end
+

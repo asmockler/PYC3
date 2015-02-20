@@ -1,4 +1,10 @@
-<% @favorites ||= [] %>
+<% 
+	if session["user"]
+		@favorites = session["user"].favorites
+	else
+		@favorites = []
+	end
+ %>
 <% @songs.each do |song| %>
 <a href="#" class="song just-loaded <% if @favorites.include? song.slug %>fav<% end %>" data-sc-url="<%= song.soundcloud_url %>" data-artist="<%= song.artist %>" data-title="<%= song.title %>" data-slug="<%= song.slug %>">
 	<img src="<%= song.album_art %>" class="img-responsive">
