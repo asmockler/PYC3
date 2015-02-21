@@ -274,6 +274,10 @@ a:hover, a:focus {
 	cursor: pointer;
 }
 
+#body #toolbar .fa-random.on {
+	text-shadow: 0 0 10px rgba(255,255,255,.5);
+}
+
 #loading {
 	position: absolute;
 	width:100%;

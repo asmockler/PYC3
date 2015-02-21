@@ -8,19 +8,7 @@ Sidebar.prototype = {
 		// Load more songs
 		$('#load-more-songs').off('click');
 		$('#load-more-songs').click(function(){
-			var num_songs = $('.song').length - 1; // Get songs minus the load more button
-			var data = $.ajax({
-				type: 'GET',
-				url: '/more/' + num_songs,
-				complete: function (data) {
-					var html = data.responseText
-					$('.song').eq(num_songs - 1).after(html); // -1 because arrays
-					$this.events();
-				},
-				error: function (error) {
-					console.log(error)
-				}
-			});
+			$this.loadMoreSongs(10);
 		});
 
 		$('.just-loaded .song-info, .just-loaded img').on('click', function (e){
@@ -89,6 +77,21 @@ Sidebar.prototype = {
 		$('.song>img').error(function() { 
 			$(this).attr('src', '/assets/provo_yacht_club2.png');
 			$(this).attr('style', 'margin-top:25px');  
+		});
+	},
+	loadMoreSongs : function (number) {
+		var num_songs = $('.song').length - 1; // Get songs minus the load more button
+		var data = $.ajax({
+			type: 'GET',
+			url: '/more/' + num_songs + '/' + number,
+			complete: function (data) {
+				var html = data.responseText
+				$('.song').eq(num_songs - 1).after(html); // -1 because arrays
+				sidebar.events();
+			},
+			error: function (error) {
+				console.log(error)
+			}
 		});
 	},
 	reloadSidebar : function(data, action) {

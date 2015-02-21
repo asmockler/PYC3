@@ -11,6 +11,9 @@ var Player = function Player () {
 
 	this.volume = 1;
 
+	this.shuffle = false;
+	this.playedShuffle = [];
+
 	this.update();
 	this.setupScrubbing();
 	this.events();
@@ -130,6 +133,23 @@ Player.prototype = {
 			$this.nextSong();
 		});
 
+		$('#random').off('click');
+		$('#random').on('click', function (e) {
+			if ( $('.song').length < 25 ) {
+				var numToLoad = 25 - $('.song').length;
+				sidebar.loadMoreSongs(numToLoad)
+			}
+
+			if (player.shuffle == true) {
+				player.shuffle = false;
+				player.playedShuffle = [];
+				$('#random').removeClass('on');
+			} else {
+				player.shuffle = true;
+				$('#random').addClass('on');
+			}
+		})
+
 		// Share button
 		$('#share').on('show.bs.modal', function() {
 			$('#share-label>span').html(song.title);
@@ -201,7 +221,27 @@ Player.prototype = {
 			}
 		}
 	},
+	randomSong : function () {
+		if ( $('.song').length - 1 > this.playedShuffle.length ) {
+			$('#loading').fadeIn();
+			numberofSongs = $('.song').length - 1;
+			do {
+				songNumber = Math.floor(Math.random() * (numberofSongs));
+			} while ( this.playedShuffle.indexOf(songNumber) > -1 ); // Keep picking randoms until you pick one that hasn't been played
+			song = new Song( $('.song').eq(songNumber), "play", function () {
+				player.update();
+				$('#loading').fadeOut();
+				player.playedShuffle.push(songNumber);
+			});
+		} else {
+			$('.fay-play-default').triggerHandler('click');
+		}
+	},
 	previousSong : function () {
+		if( this.shuffle ) {
+			return;
+		}
+
 		if ( !$('.song[data-sc-url="' + song.url + '"]').is( $('.song').first() ) ) {
 			song.stop();
 			$('#loading').fadeIn();
@@ -214,6 +254,12 @@ Player.prototype = {
 	},
 	nextSong : function () {
 		song.stop();
+
+		if( this.shuffle ) {
+			this.randomSong();
+			return;
+		}
+
 		$('#loading').fadeIn();
 
 		// Check if they left the page with the song; loads in the top song in the list if it can't find the current song for "next"-ing
