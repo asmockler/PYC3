@@ -41,9 +41,10 @@ a:hover, a:focus {
 	border-top: 1px solid #333;
 	border-bottom: 1px solid #000;
 	color: #eee;
-	transition: background .25s;
-	-webkit-transition: background .25s;
-	-moz-transition: background .25s;
+	box-shadow: inset 0 0 0 #f1c40f;
+	transition: background .25s, box-shadow .35s;
+	-webkit-transition: background .25s, box-shadow .35s;
+	-moz-transition: background .25s, box-shadow .35s;
 }
 
 #sidebar .song:hover {
@@ -82,6 +83,10 @@ a:hover, a:focus {
 
 #sidebar .song .fa-heart:hover {
 	color: #bbb;
+}
+
+#sidebar .active {
+	box-shadow: inset -5px 0 0 #f1c40f;
 }
 
 #sidebar a.fav .fa-heart {
@@ -125,6 +130,7 @@ a:hover, a:focus {
 #sidebar #sidebar-toolbar .user-info .pull-right {
 	letter-spacing: 2px;
 	font-weight: 500;
+	margin-top:-14px;
 }
 
 #sidebar #sidebar-toolbar .dropdown-menu {

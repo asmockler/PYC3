@@ -13,6 +13,12 @@ get '/more/:number_to_skip' do
 	erb :'index/partials/songs'
 end
 
+get '/recent' do
+	@songs = Song.limit(10).find_each(:published => true, :order => :created_at.desc)
+	template = erb :'index/partials/songs'
+	return [200, [{:template => template}.to_json]]
+end
+
 post '/login' do
 	@user = User.first(:email => params[:email])
 
@@ -29,6 +35,27 @@ post '/login' do
 	else
 		return 404
 	end
+end
+
+post '/logout' do
+	session.clear
+
+	@songs = Song.limit(10).skip(0).find_each(:published => true, :order => :created_at.desc)
+	template = erb :'index/partials/songs'
+
+	return [200, [{:template => template}.to_json]]
+end
+
+get '/favorites/?:skip?' do
+	return 401 unless session["user"]
+
+	@skip = params[:skip] || 0
+
+	@favorites = session["user"].favorites
+	@songs = Song.limit(10).skip(@skip).find_each(:published => true, :order => :created_at.desc, :slug => @favorites)
+	template = erb :'index/partials/songs'
+
+	return [200, [{:template => template}.to_json]]
 end
 
 post '/favorite/:action/:slug' do

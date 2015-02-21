@@ -18,6 +18,8 @@ var Player = function Player () {
 	$this = this; // window.setInterval changes the scope of this to window, so there needs to be another way to access the object
 	window.setInterval(function() {$this.updateProgressBar($this)}, 1000);
 	window.setInterval(function() {$this.autoAdvance($this)}, 1000);
+
+	Fay.init();
 }
 
 Player.prototype = {
@@ -88,6 +90,52 @@ Player.prototype = {
 				$('#volume-bar').css('width', '0%');
 			}
 		});
+
+		// Play button
+		$('.fay-play-default').on('click', function (e){
+			if (song.getState() == "playing") {
+				song.pause();
+			} else {
+				song.play();
+			}
+		});
+		$(window).keyup(function (e){
+			if (e.keyCode == 0 || e.keyCode == 32) {
+				e.preventDefault();
+				if ( song.getState() === 'playing' ) {
+					song.pause();
+				} else if ( song.getState() === 'paused' || song.getState() === 'idle' ) {
+					song.play();
+				}
+
+				$('.fay-play-default').triggerHandler('click');
+			}
+			else if (e.keyCode == 37) {
+				e.preventDefault()
+				$this.previousSong();
+			}
+			else if (e.keyCode == 39) {
+				e.preventDefault();
+				$this.nextSong();
+			}
+		});
+
+		$('.fa-backward').on('click', function (e) {
+			e.preventDefault();
+			$this.previousSong();
+		});
+
+		$('.fa-forward').on('click', function (e) {
+			e.preventDefault();
+			$this.nextSong();
+		});
+
+		// Share button
+		$('#share').on('show.bs.modal', function() {
+			$('#share-label>span').html(song.title);
+			$('#soundcloud-share-text').val(song.url);
+			$('#pyc-share-text').val("http://www.provoyachtclub.com/track/" + song.slug);
+		});
 	},
 	setupScrubbing : function () {
 		this.circleOffset = $(this.circle.path).offset();	
@@ -146,18 +194,53 @@ Player.prototype = {
 			}
 		}
 	},
-	autoAdvance : function (scope) {
+	autoAdvance : function () {
 		if (typeof song.getState == 'function') {
-			$this = scope;
 			if (song.getState() === 'ended' ) {
-				song.stop();
-				$('#loading').fadeIn();
-				var nextSong = $('.song[data-sc-url="' + song.url + '"]').next();
-				song = new Song( nextSong, "play", function () {
-					$this.update();
-					$('#loading').fadeOut();
-				});
+				this.nextSong();
 			}
+		}
+	},
+	previousSong : function () {
+		if ( !$('.song[data-sc-url="' + song.url + '"]').is( $('.song').first() ) ) {
+			song.stop();
+			$('#loading').fadeIn();
+			var previousSong = $('.song[data-sc-url="' + song.url + '"]').prev();
+			song = new Song( previousSong, "play", function () {
+				player.update();
+				$('#loading').fadeOut();
+			});
+		}
+	},
+	nextSong : function () {
+		song.stop();
+		$('#loading').fadeIn();
+
+		// Check if they left the page with the song; loads in the top song in the list if it can't find the current song for "next"-ing
+		if ( $('.song[data-sc-url="' + song.url + '"]').length < 1 ) {
+			song = new Song($('.song').first(), "play", function () {
+				player.update();
+				$('#loading').fadeOut();
+			})
+			return;
+		}
+
+		// If there are still songs in the queue, proceed as normal. Otherwise, load more and then play.
+		var nextSong = $('.song[data-sc-url="' + song.url + '"]').next();
+		if ( !nextSong.is($('#load-more-songs')) ) {
+			song = new Song( nextSong, "play", function () {
+				player.update();
+				$('#loading').fadeOut();
+			});
+		}
+		else if ( nextSong.is( $('#load-more-songs') ) ) {
+			$('#load-more-songs').click();
+			var findNextSong = window.setInterval(function() {
+				if ( !$('.song[data-sc-url="' + song.url + '"]').next().is( $('#load-more-songs') ) ) {
+					clearInterval(findNextSong);
+					player.nextSong();
+				}
+			}, 500);
 		}
 	}
 }

@@ -24,6 +24,10 @@ var Song = function Song ( reference, action, callback ) {
 				$('.fay-play-default').triggerHandler('click');
 			}
 		}
+
+		$('.active').removeClass('active');
+		$('.song[data-sc-url="' + $this.url + '"]').addClass('active');
+
 		callback();
 	});
 }

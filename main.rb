@@ -10,7 +10,7 @@ require_relative 'app/models'
 include Mongo
 
 use Rack::Session::Cookie, :key => 'rack.session',
-                           :expire_after => 60, # In seconds
+                           :expire_after => 86400, # In seconds
                            :secret => 'sd98u43nf834fnwe0s8f'
 
 configure do
