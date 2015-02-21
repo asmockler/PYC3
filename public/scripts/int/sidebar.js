@@ -85,6 +85,11 @@ Sidebar.prototype = {
 		});
 
 		$('.just-loaded').removeClass('just-loaded');
+
+		$('.song>img').error(function() { 
+			$(this).attr('src', '/assets/provo_yacht_club2.png');
+			$(this).attr('style', 'margin-top:25px');  
+		});
 	},
 	reloadSidebar : function(data, action) {
 		$('.song').not( document.getElementById('load-more-songs') ).remove();
