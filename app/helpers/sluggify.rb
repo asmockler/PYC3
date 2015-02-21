@@ -1,4 +1,6 @@
 def sluggify(title)
+  title = title.to_s
+
   accents = { 
     ['á','à','â','ä','ã'] => 'a',
     ['Ã','Ä','Â','À'] => 'A',
