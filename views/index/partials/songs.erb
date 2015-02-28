@@ -1,19 +1,35 @@
 <% 
 	if session["user"]
 		@favorites = session["user"].favorites
+		@hidden = session["user"].hidden unless @hidden_ok
 	else
 		@favorites = []
+		@hidden = []
 	end
  %>
 <% @songs.each do |song| %>
-<a href="#" class="song just-loaded <% if @favorites.include? song.slug %>fav<% end %>" data-sc-url="<%= song.soundcloud_url %>" data-artist="<%= song.artist %>" data-title="<%= song.title %>" data-slug="<%= song.slug %>">
-	<img src="<%= song.album_art %>" class="img-responsive">
-	<div class="song-info">
-		<p><%= song.title %></p>
-		<p><%= song.artist %></p>
-	</div>
-	<div class="song-tools">
-		<i class="fa fa-heart"></i>
-	</div>
-</a>
+	<% 
+		if @favorites.include? song.slug 
+			@fav = "fav" 
+		else 
+			@fav = "" 
+		end
+
+		if @hidden.include? song.slug
+			@hide = "hidden"
+		else
+			@hide = ""
+		end
+	%>
+	<a href="#" class="song just-loaded <%= @hide %> <%= @fav %>" data-sc-url="<%= song.soundcloud_url %>" data-artist="<%= song.artist %>" data-title="<%= song.title %>" data-slug="<%= song.slug %>">
+		<img src="<%= song.album_art %>" class="img-responsive">
+		<div class="song-info">
+			<p><%= song.title %></p>
+			<p><%= song.artist %></p>
+		</div>
+		<div class="song-tools">
+			<i class="fa fa-fw fa-heart"></i> <br>
+			<i class="fa fa-fw fa-close"></i>
+		</div>
+	</a>
 <% end %>

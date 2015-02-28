@@ -224,10 +224,19 @@ Player.prototype = {
 	randomSong : function () {
 		if ( $('.song').length - 1 > this.playedShuffle.length ) {
 			$('#loading').fadeIn();
-			numberofSongs = $('.song').length - 1;
+			var numberofSongs = $('.song:visible').length - 1;
+			var songNumber;
+			
 			do {
+				// generate a random number
 				songNumber = Math.floor(Math.random() * (numberofSongs));
+
+				// "Throw it out" if the song is hidden
+				if ( player.playedShuffle.indexOf(songNumber) < 0 && $('.song').eq(songNumber).is(':hidden') ) {
+					player.playedShuffle.push(songNumber);
+				}
 			} while ( this.playedShuffle.indexOf(songNumber) > -1 ); // Keep picking randoms until you pick one that hasn't been played
+			
 			song = new Song( $('.song').eq(songNumber), "play", function () {
 				player.update();
 				$('#loading').fadeOut();
@@ -242,10 +251,10 @@ Player.prototype = {
 			return;
 		}
 
-		if ( !$('.song[data-sc-url="' + song.url + '"]').is( $('.song').first() ) ) {
+		if ( !$('.song[data-sc-url="' + song.url + '"]').is( $('.song').first('.song:visible') ) ) {
 			song.stop();
 			$('#loading').fadeIn();
-			var previousSong = $('.song[data-sc-url="' + song.url + '"]').prev();
+			var previousSong = $('.song[data-sc-url="' + song.url + '"]').prev('.song:visible');
 			song = new Song( previousSong, "play", function () {
 				player.update();
 				$('#loading').fadeOut();
@@ -264,7 +273,7 @@ Player.prototype = {
 
 		// Check if they left the page with the song; loads in the top song in the list if it can't find the current song for "next"-ing
 		if ( $('.song[data-sc-url="' + song.url + '"]').length < 1 ) {
-			song = new Song($('.song').first(), "play", function () {
+			song = new Song($('.song').first('.song:visible'), "play", function () {
 				player.update();
 				$('#loading').fadeOut();
 			})
@@ -272,7 +281,7 @@ Player.prototype = {
 		}
 
 		// If there are still songs in the queue, proceed as normal. Otherwise, load more and then play.
-		var nextSong = $('.song[data-sc-url="' + song.url + '"]').next();
+		var nextSong = $('.song[data-sc-url="' + song.url + '"]').nextAll('.song:visible').first();
 		if ( !nextSong.is($('#load-more-songs')) ) {
 			song = new Song( nextSong, "play", function () {
 				player.update();
@@ -282,7 +291,7 @@ Player.prototype = {
 		else if ( nextSong.is( $('#load-more-songs') ) ) {
 			$('#load-more-songs').click();
 			var findNextSong = window.setInterval(function() {
-				if ( !$('.song[data-sc-url="' + song.url + '"]').next().is( $('#load-more-songs') ) ) {
+				if ( !$('.song[data-sc-url="' + song.url + '"]').nextAll('.song:visible').first().is( $('#load-more-songs') ) ) {
 					clearInterval(findNextSong);
 					player.nextSong();
 				}

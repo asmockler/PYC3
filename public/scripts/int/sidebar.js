@@ -22,6 +22,11 @@ Sidebar.prototype = {
 			});
 		});
 
+		$('.just-loaded .fa-close').on('click', function (e) {
+			e.preventDefault();
+			$this.hideSong($(this));
+		});
+
 		$('.just-loaded .fa-heart').on('click', function (e) {
 			e.preventDefault();
 			if ( $(this).parents('.song').hasClass('fav') ) {
@@ -70,6 +75,11 @@ Sidebar.prototype = {
 		$('#show-recent').off('click');
 		$('#show-recent').on('click', function (e){
 			$this.showRecent();
+		});
+
+		$('#show-hidden').off('click');
+		$('#show-hidden').on('click', function (e){
+			$this.showHidden();
 		});
 
 		$('.just-loaded').removeClass('just-loaded');
@@ -137,12 +147,30 @@ Sidebar.prototype = {
 			}
 		});
 	},
+	showHidden : function() {
+		$.ajax({
+			type : 'GET',
+			url : '/hidden',
+			dataType : 'json',
+			success : function (data) {
+				sidebar.reloadSidebar(data, "hidden");
+				$('#player-dropdown').html('<span>Hidden <span class="caret"></span></span>');
+				$('.song[data-sc-url="' + song.url + '"]').addClass('active');
+				$('.song').addClass('song-hidden');
+			},
+			error : function(error) {
+				if (error.status === 401) {
+					$('#login').modal('show');
+				}
+			}
+		})
+	},
 	favoriteSong : function( element ) {
 		element.parents('.song').addClass('fav');
 		var slug = element.parents('.song').attr('data-slug');
 		$.ajax({
 			type: 'POST',
-			url: '/favorite/favorite/' + slug,
+			url: '/api/favorite/' + slug,
 			complete: function(data) {
 
 			},
@@ -159,7 +187,7 @@ Sidebar.prototype = {
 		var slug = element.parents('.song').attr('data-slug');
 		$.ajax({
 			type: 'POST',
-			url: '/favorite/unfavorite/' + slug,
+			url: '/api/unfavorite/' + slug,
 			complete: function(data) {
 
 			},
@@ -170,6 +198,40 @@ Sidebar.prototype = {
 				}
 			}
 		})
+	},
+	hideSong : function (el) {
+		var sidebarItem = el.parents('.song');
+		if ( sidebarItem.hasClass('song-hidden') ) {
+			$.ajax({
+				type: 'POST',
+				url: '/api/unhide/' + sidebarItem.attr('data-slug'),
+				complete: function(data) {
+					sidebarItem.fadeOut(400, function(){
+						sidebarItem.removeClass('hidden');
+					});
+				},
+				error: function(error) {
+					if (error.status === 401) {
+						$('#login').modal('show')
+					}
+				}
+			});
+		} else {
+			$.ajax({
+				type: 'POST',
+				url: '/api/hide/' + sidebarItem.attr('data-slug'),
+				complete: function(data) {
+					sidebarItem.fadeOut(400, function(){
+						sidebarItem.addClass('hidden');
+					});
+				},
+				error: function(error) {
+					if (error.status === 401) {
+						$('#login').modal('show')
+					}
+				}
+			})
+		}
 	},
 	loginError : function (error) {
 		if ( error.status === 401 ) {

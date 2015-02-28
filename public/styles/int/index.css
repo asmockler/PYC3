@@ -72,16 +72,20 @@ a:hover, a:focus {
 	position: absolute;
 	right: 0;
 	top: 0;
-	padding: 15px;
+	padding: 15px 10px;
 	font-size: 20px;
 }
 
-#sidebar .song .song-tools .fa-heart {
+#sidebar .song .song-tools .fa-heart, #sidebar .song .song-tools .fa-close {
 	transition: color .25s;
 	-webkit-transition: color .25s;
 }
 
-#sidebar .song .fa-heart:hover {
+#sidebar .song .song-tools .fa-close {
+	color: #444;
+}
+
+#sidebar .song .fa-heart:hover, #sidebar .song .song-tools .fa-close:hover {
 	color: #bbb;
 }
 
@@ -89,7 +93,7 @@ a:hover, a:focus {
 	box-shadow: inset -5px 0 0 #f1c40f;
 }
 
-#sidebar a.fav .fa-heart {
+#sidebar a.fav .fa-heart, #sidebar a.song-hidden .song-tools .fa-close {
 	color: #e74c3c;
 }
 

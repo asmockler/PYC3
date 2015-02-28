@@ -60,7 +60,18 @@ get '/favorites/?:skip?' do
 	return [200, [{:template => template}.to_json]]
 end
 
-post '/favorite/:action/:slug' do
+get '/hidden' do
+	return 401 unless session["user"]
+
+	@hidden_ok = true
+	@hidden = []
+	@songs = Song.limit(10).skip(@skip).find_each(:published => true, :order => :created_at.desc, :slug => session["user"].hidden)
+	template = erb :'index/partials/songs'
+
+	return [200, [{:template => template}.to_json]]
+end
+
+post '/api/:action/:slug' do
 	return 401 unless session["user"]
 
 	@slug = params[:slug]
@@ -70,12 +81,15 @@ post '/favorite/:action/:slug' do
 		@user.favorites << @slug
 	elsif params[:action] == "unfavorite"
 		@user.favorites.delete(@slug)
+	elsif params[:action] == "hide"
+		@user.hidden << @slug
+	elsif params[:action] == "unhide"
+		@user.hidden.delete(@slug)
 	end
-	@user.save
 
+	@user.save
 	@user.reload
 	session["user"] = @user
 
 	return 200
 end
-
