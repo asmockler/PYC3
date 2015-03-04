@@ -5,6 +5,8 @@
  */
 
 var Song = function Song ( reference, action, callback ) {
+	SC.initialize({ client_id: '91a4f9b982b687d85c9d42e2f4991a09' });
+
 	var action = action || 'load';
 	var deferredObject = $.Deferred();
 	var $this = this;
