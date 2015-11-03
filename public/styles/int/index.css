@@ -365,5 +365,18 @@ p#load-status {
 	margin: 15px 30px;
 }
 
+a#login-submit, a#new-user {
+	border-radius:0;
+	width:45%;
+	transition: background .5s;
+	-webkit-transition: background .5s;
+}
 
+a#login-submit:hover, a#new-user:hover {
+	background: #ccc;
+}
+
+@media all and (max-width: 1280px) {
+	
+}
 
